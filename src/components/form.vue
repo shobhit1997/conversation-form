@@ -35,29 +35,37 @@ export default{
 		data:null,
     index:0,
     ans:null,
-    answers:[],
+    answers:{},
     type:"text",
     disabled:false
 		}
 	},
 	methods:{
     addComponent(){
-      let type=this.data.questions[this.index].type
-      if(type==='text'){
-        this.type="text";
-        this.disabled=false;
-        this.addSingleComponent(); 
-      }else if(type==='mutiple-choice'){
-        this.addMultipleComponent();
-        this.disabled=true;
-      }else if(type==='phone'){
-        this.addSingleComponent();
-        this.type="phone"
-        this.disabled=false;
-      }else if(type==='admission-no'){
-        this.type="text";
-        this.disabled=false;
-        this.addSingleComponent();
+      if(this.index<this.data.questions.length){
+        let type=this.data.questions[this.index].type
+        if(type==='text'){
+          this.type="text";
+          this.disabled=false;
+          this.addSingleComponent(); 
+        }else if(type==='multiple-choice'){
+          this.addMultipleComponent();
+          this.disabled=true;
+        }else if(type==='phone'){
+          this.addSingleComponent();
+          this.type="tel"
+          this.disabled=false;
+        }else if(type==='admission-no'){
+          this.type="text";
+          this.disabled=false;
+          this.addSingleComponent();
+        }else if(type==='email'){
+          this.type="email";
+          this.disabled=false;
+          this.addSingleComponent();
+        }
+      }else{
+        this.addFinalComponent();
       }
     },
     send(){
@@ -67,8 +75,8 @@ export default{
         })
         instance.$mount()   
         this.$refs.container.appendChild(instance.$el)
+        this.answers[this.data.questions[this.index].description]=this.ans;
         this.index++;
-        this.answers.push(this.ans);
         this.ans=null;
         this.addComponent();
     },
@@ -93,13 +101,79 @@ export default{
         instance.$mount()
            
         this.$refs.container.appendChild(instance.$el)
+      },
+      addInitialComponent(){
+        var ComponentClass = Vue.extend(multipleAns)
+        var instance = new ComponentClass({
+            propsData: { question: "Do you want to register for this event",from:"ncs",options:["Yes","No"] }
+        })
+        instance.$on('selected',this.addInitialComponentHandler);  
+        instance.$mount()
+           
+        this.$refs.container.appendChild(instance.$el)
+      },
+      addInitialComponentHandler(data){
+
+        if(data=="Yes"){
+          this.addComponent();
+        }
+        else{
+          var ComponentClass = Vue.extend(singleAns)
+          var instance = new ComponentClass({
+            propsData: { question: "Thankyou for visiting",from:"ncs" }
+          })
+          instance.$mount()
+          this.$refs.container.appendChild(instance.$el)
+          this.disabled=true;
+        }
+
+      },
+      addFinalComponent(){
+        var ComponentClass = Vue.extend(multipleAns)
+        var instance = new ComponentClass({
+            propsData: { question: "Do you want to submit the form",from:"ncs",options:["Yes","No"] }
+        })
+        instance.$on('selected',this.addFinalComponentHandler);  
+        instance.$mount()
+           
+        this.$refs.container.appendChild(instance.$el)
+      },
+      addFinalComponentHandler(data){
+
+        if(data=="Yes"){
+
+          var req={
+            _id:this.data._id,
+            response:this.answers
+          };
+          apiService.submitForm(req).then((data)=>{
+            console.log(data.data);
+            var ComponentClass = Vue.extend(singleAns)
+            var instance = new ComponentClass({
+              propsData: { question: "Thankyou for registering!",from:"ncs" }
+            })
+            instance.$mount()
+            this.$refs.container.appendChild(instance.$el)
+            this.disabled=true;
+          });
+        }
+        else{
+          var ComponentClass = Vue.extend(singleAns)
+          var instance = new ComponentClass({
+            propsData: { question: "Thankyou for visiting",from:"ncs" }
+          })
+          instance.$mount()
+          this.$refs.container.appendChild(instance.$el)
+          this.disabled=true;
+        }
+
       }
 	},
 	mounted(){
 		apiService.getForm(this.$route.params.id).then((data)=>{
 				this.data=data.data;
 				// alert(data);
-        this.addComponent();
+        this.addInitialComponent();
 		});
 
 	}
