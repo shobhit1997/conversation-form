@@ -1,7 +1,8 @@
 <template>
 <div>
 	
-	<button class="btn btn-default" @click="logout">Logout</button>
+	<button class="btn btn-default" @click="logout" :style="{'float':'right'}">Logout</button>
+	<button class="btn btn-default" @click="myforms" :style="{'float':'right'}">My Forms</button>
 	<section id="loginform" class="outer-wrapper">
 
   <div class="inner-wrapper">
@@ -70,7 +71,7 @@ export default{
 				questions:this.questions
 			};
 			apiService.createForm(obj).then((data)=>{
-				alert(data.data.shortUrl);
+				alert(window.location.origin+"/form/"+data.data.shortUrl);
 			});
 		},
 		addQuestion(){
@@ -124,7 +125,11 @@ export default{
 		logout(){
 			localStorage.removeItem('x-auth');
 			window.location.href="/login";
+		},
+		myforms(){
+			window.location.href="/myforms"	
 		}
+
 	},
 	mounted(){
 		if(!localStorage.getItem('x-auth')){

@@ -1,9 +1,9 @@
 <template>
-<div style="align-items: center;">
+<div class="center" :style="{'background-image': 'url(' + require('../assets/background1.jpg') + ')','height':'100vh','width':'100vw'}">
 	
-		<h3>Convert your normal form into conversational form</h3>
+		<h1 :style="{'color':'black'}">Convert your normal form into conversational form</h1>
 		<br>
-		<button v-on:click="create">Create Form</button>
+		<button v-on:click="create" :style="{'height':'35px'}">Create Form</button>
 </div>
 </template>
 <script>
@@ -31,3 +31,11 @@ export default{
 	}
 }
 </script>
+
+<style type="text/css">
+	.center {
+  padding: 70px 0;
+  border: 3px solid green;
+  text-align: center;
+}
+</style>

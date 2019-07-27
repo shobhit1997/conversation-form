@@ -3,7 +3,7 @@
 	<div class="centered-form__form">
 		<form id="signup-form" @submit.prevent="login">
 		<div class="form-field">
-			<h3>Login</h3>
+			<h3>Infoconnect Login</h3>
 		</div>
 		<div class="form-field">
 			<label>Username</label>
@@ -15,6 +15,9 @@
 		</div>
 		<div class="form-field">
 			<button>Login</button>
+		</div>
+		<div class="form-field">
+			<button v-on:click="loginTrial">Trial</button>
 		</div>
 		</form>
 	</div>
@@ -37,6 +40,15 @@ export default{
 	methods:{
 		login(){
 			const req={username:this.username,password:this.password};
+			apiService.login(req).then((data)=>{
+				localStorage.setItem('x-auth',data.headers['x-auth']);
+				localStorage.setItem('username',data.data.username);
+				localStorage.setItem('token',data.data.token);
+				window.location.href='/createForm';
+			});
+		},
+		loginTrial(){
+			const req={username:'16cse001',password:'001'};
 			apiService.login(req).then((data)=>{
 				localStorage.setItem('x-auth',data.headers['x-auth']);
 				localStorage.setItem('username',data.data.username);

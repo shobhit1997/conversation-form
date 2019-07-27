@@ -1,11 +1,15 @@
 <template>
 <div class="chat">
-<div class="chat__sidebar">
-  <h3>People</h3>
-  <div id="users"></div>
-</div>
+<!-- <div>
+  <h2 :style="{'color':'white'}">Title : {{name}}</h2>
+  <h3 :style="{'color':'white'}">Description : {{description}}</h3>
+</div> -->
 
 <div class="chat__main">
+  <div>
+  <h3 :style="{'color':'black'}">Title : {{name}}</h3>
+  <h3 :style="{'color':'black'}">Description : {{description}}</h3>
+</div>
 <ol class="chat__messages" id="messages" ref="container">
   
 </ol>
@@ -37,7 +41,9 @@ export default{
     ans:null,
     answers:{},
     type:"text",
-    disabled:false
+    disabled:false,
+    name:null,
+    description:null
 		}
 	},
 	methods:{
@@ -105,7 +111,7 @@ export default{
       addInitialComponent(){
         var ComponentClass = Vue.extend(multipleAns)
         var instance = new ComponentClass({
-            propsData: { question: "Do you want to register for this event",from:"ncs",options:["Yes","No"] }
+            propsData: { question: "Do you want to register for this event",from:this.data.creatorUsername,options:["Yes","No"] }
         })
         instance.$on('selected',this.addInitialComponentHandler);  
         instance.$mount()
@@ -172,6 +178,8 @@ export default{
 	mounted(){
 		apiService.getForm(this.$route.params.id).then((data)=>{
 				this.data=data.data;
+        this.name=this.data.name;
+        this.description=this.data.description;
 				// alert(data);
         this.addInitialComponent();
 		});

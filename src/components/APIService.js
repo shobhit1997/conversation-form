@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://cform.shobhitagarwal.me';
 export class APIService{
 
 constructor(){
@@ -23,7 +23,9 @@ createForm(obj){
 			"Content-Type":"application/json",
 			"username":localStorage.getItem('username'),
 			"token":localStorage.getItem('token'),
-			"x-auth":localStorage.getItem('x-auth')
+			"x-auth":localStorage.getItem('x-auth'),
+			'crossDomain': true
+
 	};
 	var options={
 		headers
@@ -36,7 +38,8 @@ getMyForms(){
 			"Content-Type":"application/json",
 			"username":localStorage.getItem('username'),
 			"token":localStorage.getItem('token'),
-			"x-auth":localStorage.getItem('x-auth')
+			"x-auth":localStorage.getItem('x-auth'),
+			'crossDomain': true
 	};
 	var options={
 		headers
@@ -49,7 +52,8 @@ getResponses(id){
 			"Content-Type":"application/json",
 			"username":localStorage.getItem('username'),
 			"token":localStorage.getItem('token'),
-			"x-auth":localStorage.getItem('x-auth')
+			"x-auth":localStorage.getItem('x-auth'),
+			'crossDomain': true
 	};
 	var options={
 		headers,

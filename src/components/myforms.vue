@@ -1,10 +1,12 @@
 <template>
-<table>
+  <div class="box">
+<table >
     <thead>
       <tr>
         <th>Title</th>
         <th>Responses</th>
         <th>Download</th>
+        <th>URL</th>
       </tr>
     </thead>
     <tbody>
@@ -12,9 +14,11 @@
         <td>{{form.name}}</td>
         <td>{{form.responses}}</td>
         <td><button @click="download(form.shortUrl)">Download</button></td>
+        <td>{{form.displayUrl}}</td>
       </tr>
     </tbody>
   </table>
+</div>  
 </template>
 <script>
 import {APIService} from './APIService.js'
@@ -43,6 +47,9 @@ export default{
 	mounted(){
 		apiService.getMyForms().then((data)=>{
 			this.forms=data.data;
+      this.forms.forEach(form=>{
+        form.displayUrl=window.location.origin+'/form/'+form.shortUrl;
+      });
 		});
 	}
 }
@@ -84,4 +91,21 @@ th, td {
 th.active {
   color: #fff;
 }
+
+
+.center {
+  padding: 70px 0;
+  text-align: center;
+}
+
+.box {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color:#d9d9d9;
+    
+}
+
 </style>
