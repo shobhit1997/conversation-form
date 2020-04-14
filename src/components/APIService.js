@@ -13,6 +13,21 @@ login(req){
 	const url = `${API_URL}/api/user/login`;
 	return axios.post(url,req);
 }
+loginInfoconnect(req){
+	const url = `${API_URL}/api/oauth/login/infoconnect`;
+	var headers={
+			"Content-Type":"application/json",
+			'crossDomain': true
+	};
+	var options={
+		headers
+	}
+	return axios.post(url,req,options);
+}
+loginGoogle(req){
+	const url = `${API_URL}/api/oauth/login/google`;
+	return axios.post(url,req);
+}
 submitForm(req){
 	const url = `${API_URL}/api/form/submit`;
 	return axios.post(url,req);

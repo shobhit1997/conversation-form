@@ -5,6 +5,7 @@ import login from '@/components/LoginComponent'
 import main from '@/components/mainComponent'
 import createForm from '@/components/createFormComponent'
 import myforms from '@/components/myforms'
+import callback from '@/components/Callback'
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +35,11 @@ export default new Router({
       path: '/myforms',
       name: 'myforms',
       component: myforms
+    },
+    {
+      path: '/callback',
+      name: 'callback',
+      component: callback
     }
   ]
 })

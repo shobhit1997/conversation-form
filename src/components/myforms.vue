@@ -13,7 +13,7 @@
       <tr v-for="form in forms">
         <td>{{form.name}}</td>
         <td>{{form.responses}}</td>
-        <td><button @click="download(form.shortUrl)">Download</button></td>
+        <td><button @click="download(form.name,form.shortUrl)">Download</button></td>
         <td>{{form.displayUrl}}</td>
       </tr>
     </tbody>
@@ -34,12 +34,12 @@ export default{
 		};
 	},
 	methods:{
-		download(shortUrl){
+		download(name,shortUrl){
 			apiService.getResponses(shortUrl).then((data)=>{
 				const url = window.URL.createObjectURL(new Blob([data.data]));
    				const link = document.createElement('a');
    				link.href = url;
-   				link.setAttribute('download', 'response.xls'); //or any other extension
+   				link.setAttribute('download', name+'_response.csv'); //or any other extension
    				link.click();
 			});
 		}

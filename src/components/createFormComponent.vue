@@ -83,7 +83,7 @@ export default{
 
 		}else if(this.quesType==='Email'){
 			this.addSingleQuestion('email','email');
-		}else if(this.quesType==='Admission No,'){
+		}else if(this.quesType==='Admission No.'){
 			this.addSingleQuestion('text','admission-no');
 		}else{
 			this.addSingleQuestion('text','text');
